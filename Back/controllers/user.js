@@ -1,3 +1,21 @@
+const sqlite = require("sqlite3").verbose();
+
+// open the database
+let db = new sqlite.Database("./DB/db1.sql", sqlite.OPEN_READWRITE, (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log("Connected to the database.");
+});
+
+// close the database connection
+db.close((err) => {
+  if (err) {
+    return console.error(err.message);
+  }
+  console.log("Close the database connection.");
+});
+
 // MIDDLEWARE SIGNUP  - Inscription de l'utilisateur et hashage du mot de passe
 exports.signup = (req, res, next) => {
   bcrypt
