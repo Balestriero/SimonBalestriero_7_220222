@@ -9,11 +9,12 @@ exports.signup = (req, res, next) => {
 
       let sqlSignup;
       let values;
-
+      // code à modifier pour sqlite
       sqlSignup =
         "INSERT INTO user VALUES (NULL, ?, ?, ?, NULL, ?, NULL, avatarUrl, NOW())";
       values = [email, username, password];
       mysql.query(sqlSignup, values, function (err, result) {
+        // fin code à modifier pour sqlite
         if (err) {
           return res.status(500).json(err.message);
         }
@@ -31,7 +32,9 @@ exports.login = (req, res, next) => {
 
   const sqlFindUser = "SELECT userID, password FROM User WHERE email = ?";
   //recherche de l'utilisateur dans la base de données
+  //code à modifier pour sqlite
   mysql.query(sqlFindUser, [email], function (err, result) {
+    // fin code à modifier pour sqlite
     if (err) {
       return res.status(500).json(err.message);
     }
