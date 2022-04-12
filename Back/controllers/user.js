@@ -21,6 +21,8 @@ exports.signup = (req, res, next) => {
     const username = req.body.username;
     const password = hash;
 
+    
+
     db.run(
       `INSERT INTO users(username, password, email) VALUES(?, ?, ?)`,
       [username, password, email],

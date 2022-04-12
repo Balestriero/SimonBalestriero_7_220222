@@ -21,6 +21,7 @@ exports.createPost = (req, res, next) => {
   db.run(
     `INSERT INTO posts(date_publication, user_id, content) VALUES (?, ?, ?)`,
     [dateCreation, username, content],
+    // modifier ca ? "username" doit être remplacé par le username loggé au moment du post
     function (err, result) {
       if (err) {
         return res.status(500).json(err.message);

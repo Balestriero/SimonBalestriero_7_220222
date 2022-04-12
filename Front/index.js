@@ -16,21 +16,25 @@ button1.addEventListener("click", () => {
   console.log(newUser);
 
   // Envoi du signup au server
-  fetch("//localhost:3000/api/auth/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newUser),
-  })
-    .then((res) => res.json())
-    .then((value) => {
-      document.location.href = "signup.html";
+  if (newUser.username && newUser.email && newUser.password != null) {
+    fetch("//localhost:3000/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
     })
-    .catch((err) => {
-      alert("Erreur :" + err.message);
-    });
-  console.log("utilisateur enregistré dans la db");
+      .then((res) => res.json())
+      .then((value) => {
+        document.location.href = "signup.html";
+      })
+      .catch((err) => {
+        alert("Erreur :" + err.message);
+      });
+    console.log("utilisateur enregistré dans la db");
+  } else {
+    window.alert("Veuillez renseigner tous les champs");
+  }
 });
 
 button2.addEventListener("click", () => {
@@ -55,7 +59,12 @@ button2.addEventListener("click", () => {
   })
     .then((res) => res.json())
     .then((value) => {
-      document.location.href = "logged.html";
+      console.log(value);
+      if (value.token != null) {
+        document.location.href = "logged.html";
+      } else {
+        window.alert("utilisateur non reconnu");
+      }
     })
     .catch((err) => {
       alert("Erreur :" + err.message);
