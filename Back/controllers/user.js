@@ -1,6 +1,7 @@
 const sqlite = require("sqlite3").verbose();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const auth = require("../middlewares/auth");
 
 // open the database
 let db = new sqlite.Database(
@@ -17,11 +18,9 @@ let db = new sqlite.Database(
 // MIDDLEWARE SIGNUP  - Inscription de l'utilisateur et hashage du mot de passe
 exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10).then((hash) => {
-    const email = req.body.email;
     const username = req.body.username;
     const password = hash;
-
-    
+    const email = req.body.email;
 
     db.run(
       `INSERT INTO users(username, password, email) VALUES(?, ?, ?)`,
@@ -39,13 +38,18 @@ exports.signup = (req, res, next) => {
 
 // MIDDLEWARE LOGIN avec vérification de l'email unique
 exports.login = (req, res, next) => {
-  const email = req.body.email;
+  // const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
 
   //recherche de l'utilisateur dans la base de données
   db.get(
-    `SELECT username, password FROM users WHERE email = ?`,
-    [email],
+    // `SELECT username, password FROM users WHERE email = ?`,
+    `SELECT username, password FROM users WHERE username = ?`,
+
+    // [email],
+    [username],
+
     function (err, result) {
       if (err) {
         return res.status(500).json(err.message);
@@ -71,6 +75,23 @@ exports.login = (req, res, next) => {
           console.log(e);
           res.status(500).json(e);
         });
+    }
+  );
+};
+// FIN MIDDLEWARE
+
+// MIDDLEWARE DELETEUSER pour supprimer un coompte
+exports.deleteUser = (req, res, next) => {
+  const userID = req.body.userId;
+
+  db.run(
+    `DELETE FROM users WHERE username = ?`,
+    [userID],
+    function (err, result) {
+      if (err) {
+        return res.status(500).json(err.message);
+      }
+      res.status(200).json({ message: "Utilisateur supprimé !" });
     }
   );
 };

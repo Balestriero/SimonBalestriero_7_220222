@@ -1,7 +1,8 @@
-const button1 = document.getElementById("btn_signup");
-const button2 = document.getElementById("btn_login");
+const buttonSign = document.getElementById("btn_signup");
+const buttonLog = document.getElementById("btn_login");
+const buttonPost = document.getElementById("btn_message");
 
-button1.addEventListener("click", () => {
+buttonSign.addEventListener("click", () => {
   //Récupération des données du formulaire signup
   let signUsername = document.getElementById("sign_username");
   let signEmail = document.getElementById("sign_email");
@@ -37,19 +38,23 @@ button1.addEventListener("click", () => {
   }
 });
 
-button2.addEventListener("click", () => {
+buttonLog.addEventListener("click", () => {
   //Récupération des données du formulaire signup
-  let logEmail = document.getElementById("log_email");
+  // let logEmail = document.getElementById("log_email");
+  let logUsername = document.getElementById("log_username");
+
   let logPassword = document.getElementById("log_password");
 
-  // Création du signup à envoyer au server
+  // Création du login à envoyer au server
   const logUser = {
-    email: logEmail.value,
+    // email: logEmail.value,
+    username: logUsername.value,
+
     password: logPassword.value,
   };
   console.log(logUser);
 
-  // Envoi du signup au server
+  // Envoi du login au server
   fetch("//localhost:3000/api/auth/login", {
     method: "POST",
     headers: {
@@ -61,11 +66,37 @@ button2.addEventListener("click", () => {
     .then((value) => {
       console.log(value);
       if (value.token != null) {
-        document.location.href = "logged.html";
+        // document.location.href = "logged.html";
+        document.location = `logged.html?${logUser.username}`;
       } else {
         window.alert("utilisateur non reconnu");
       }
     })
+    .catch((err) => {
+      alert("Erreur :" + err.message);
+    });
+});
+
+buttonPost.addEventListener("click", () => {
+  //Récupération des données du formulaire message
+  let postMessage = document.getElementById("post");
+  console.log(postMessage);
+
+   // Création du signup à envoyer au server
+   const newPost = {
+    content: postMessage.value
+  };
+  console.log(newPost);
+
+  // Envoi du login au server
+  fetch("//localhost:3000/api/post", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newPost),
+  })
+    .then((res) => res.json())
     .catch((err) => {
       alert("Erreur :" + err.message);
     });

@@ -1,4 +1,6 @@
 const sqlite = require("sqlite3").verbose();
+const auth = require("../middlewares/auth");
+const jwt = require("jsonwebtoken");
 
 // open the database
 let db = new sqlite.Database(
@@ -21,7 +23,7 @@ exports.createPost = (req, res, next) => {
   db.run(
     `INSERT INTO posts(date_publication, user_id, content) VALUES (?, ?, ?)`,
     [dateCreation, username, content],
-    // modifier ca ? "username" doit être remplacé par le username loggé au moment du post
+    // "username" doit être remplacé par le username loggé au moment du post
     function (err, result) {
       if (err) {
         return res.status(500).json(err.message);
@@ -34,11 +36,11 @@ exports.createPost = (req, res, next) => {
 
 // MIDDLEWARE DELETEPOST pour supprimer les messages
 exports.deletePost = (req, res, next) => {
-  const postID = req.params.id;
-  const userID = req.userID;
+  const postID = req.body.postId;
+  const userID = req.body.userId;
 
   db.run(
-    `DELETE FROM posts WHERE userID = ? AND postID = ?`,
+    `DELETE FROM posts WHERE user_id = ? AND postID = ?`,
     [userID, postID],
     function (err, result) {
       if (err) {
@@ -48,7 +50,6 @@ exports.deletePost = (req, res, next) => {
     }
   );
 };
-
 // FIN MIDDLEWARE
 
 // MIDDLEWARE GETALLPOSTS pour obtenir tous les messages

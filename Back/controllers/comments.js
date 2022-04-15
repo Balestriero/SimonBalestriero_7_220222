@@ -20,14 +20,14 @@ exports.createComment = (req, res, next) => {
   const post = req.body.post;
 
   db.run(
-    `INSERT INTO comments(date_publication, user_id, content) VALUES (?, ?, ?, ?)`,
+    `INSERT INTO comments(date_publication, user_id, content, post_id) VALUES (?, ?, ?, ?)`,
     [dateCreation, username, content, post],
     // modifier ca ? "username" et "post" doivent être remplacés par le username loggé au moment du comment et le post sélectionné
     function (err, result) {
       if (err) {
         return res.status(500).json(err.message);
       }
-      res.status(201).json({ message: "Comment crée !" });
+      res.status(201).json({ message: "Commentaire crée !" });
     }
   );
 };
@@ -35,17 +35,17 @@ exports.createComment = (req, res, next) => {
 
 // MIDDLEWARE DELETECOMMENT pour supprimer les commentaires
 exports.deleteComment = (req, res, next) => {
-  const commentID = req.params.id;
-  const userID = req.userID;
-
+  const userID = req.body.userID;
+  const commentID = req.body.commentID;
+  
   db.run(
-    `DELETE FROM comments WHERE userID = ? AND commentID = ?`,
+    `DELETE FROM comments WHERE user_Id = ? AND commentID = ?`,
     [userID, commentID],
     function (err, result) {
       if (err) {
         return res.status(500).json(err.message);
       }
-      res.status(200).json({ message: "Comment supprimé !" });
+      res.status(200).json({ message: "Commentaire supprimé !" });
     }
   );
 };
