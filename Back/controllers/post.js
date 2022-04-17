@@ -76,8 +76,8 @@ exports.getOnePost = (req, res, next) => {
   const postID = req.params.id;
 
   db.get(
-    `SELECT content FROM posts WHERE post.id = ?`,
-    [post.id],
+    `SELECT content FROM posts WHERE post_id = ?`,
+    [postID],
     function (err, result) {
       if (err) {
         return res.status(500).json(err.message);
