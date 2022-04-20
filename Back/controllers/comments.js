@@ -51,3 +51,20 @@ exports.deleteComment = (req, res, next) => {
 };
 
 // FIN MIDDLEWARE
+
+// getAllComFromSingleMessage pour récupérer tous les commentaires d'un message
+exports.getAllPosts = (req, res, next) => {
+  db.all(
+    `SELECT * FROM posts ORDER BY date_publication`,
+    [],
+    function (err, result) {
+      if (err) {
+        return res.status(500).json(err.message);
+      }
+      if (result == null) {
+        return res.status(400).json({ message: "Aucun post à afficher !" });
+      }
+      res.status(200).json(result);
+    }
+  );
+};

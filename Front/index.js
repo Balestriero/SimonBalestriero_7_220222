@@ -75,6 +75,3 @@ buttonLog.addEventListener("click", () => {
       alert("Erreur :" + err.message);
     });
 });
-
-
-

@@ -52,10 +52,10 @@ exports.deletePost = (req, res, next) => {
 };
 // FIN MIDDLEWARE
 
-// MIDDLEWARE GETALLPOSTS pour obtenir tous les messages
+// getAllPosts pour récupérer tous les messages
 exports.getAllPosts = (req, res, next) => {
   db.all(
-    `SELECT DISTINCT content FROM posts ORDER BY date_publication`,
+    `SELECT * FROM posts ORDER BY date_publication`,
     [],
     function (err, result) {
       if (err) {
@@ -68,7 +68,6 @@ exports.getAllPosts = (req, res, next) => {
     }
   );
 };
-// FIN MIDDLEWARE
 
 // MIDDLEWARE GETONEPOST pour obtenir un message
 exports.getOnePost = (req, res, next) => {
