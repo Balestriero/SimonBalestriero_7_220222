@@ -39,16 +39,12 @@ buttonSign.addEventListener("click", () => {
 
 buttonLog.addEventListener("click", () => {
   //Récupération des données du formulaire signup
-  // let logEmail = document.getElementById("log_email");
   let logUsername = document.getElementById("log_username");
-
   let logPassword = document.getElementById("log_password");
 
   // Création du login à envoyer au server
   const logUser = {
-    // email: logEmail.value,
     username: logUsername.value,
-
     password: logPassword.value,
   };
   console.log(logUser);
@@ -65,7 +61,6 @@ buttonLog.addEventListener("click", () => {
     .then((value) => {
       console.log(value);
       if (value.token != null) {
-        // document.location.href = "logged.html";
         document.location = `logged.html?${logUser.username}`;
       } else {
         window.alert("utilisateur non reconnu");

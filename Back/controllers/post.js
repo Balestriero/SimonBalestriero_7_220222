@@ -36,8 +36,8 @@ exports.createPost = (req, res, next) => {
 
 // MIDDLEWARE DELETEPOST pour supprimer les messages
 exports.deletePost = (req, res, next) => {
-  const postID = req.body.postId;
-  const userID = req.body.userId;
+  const postID = req.body.postID;
+  const userID = req.body.userID;
 
   db.run(
     `DELETE FROM posts WHERE user_id = ? AND postID = ?`,
@@ -71,11 +71,10 @@ exports.getAllPosts = (req, res, next) => {
 
 // MIDDLEWARE GETONEPOST pour obtenir un message
 exports.getOnePost = (req, res, next) => {
-  const userID = res.userID;
+  // const userID = res.userID;
   const postID = req.params.id;
-
   db.get(
-    `SELECT content FROM posts WHERE post_id = ?`,
+    `SELECT * FROM posts WHERE postID = ?`,
     [postID],
     function (err, result) {
       if (err) {
